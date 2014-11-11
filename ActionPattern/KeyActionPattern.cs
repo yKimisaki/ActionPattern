@@ -19,4 +19,13 @@ namespace System.ActionPattern
             Patterns.Add(key, action);
         }
     }
+
+    internal class KeyActionPattern<T, TArgument, TResult>
+        : ActionPatternBase<T, Func<T, TArgument, TResult>>
+    {
+        public KeyActionPattern(T key, Func<T, TArgument, TResult> action)
+        {
+            Patterns.Add(key, action);
+        }
+    }
 }

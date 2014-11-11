@@ -19,4 +19,13 @@ namespace System.ActionPattern
             Patterns.Add(predicate, action);
         }
     }
+
+    internal class PredicateActionPattern<T, TArgument, TResult>
+        : ActionPatternBase<Func<T, bool>, Func<T, TArgument, TResult>>
+    {
+        public PredicateActionPattern(Func<T, bool> predicate, Func<T, TArgument, TResult> action)
+        {
+            Patterns.Add(predicate, action);
+        }
+    }
 }

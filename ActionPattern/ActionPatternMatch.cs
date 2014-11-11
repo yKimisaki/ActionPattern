@@ -35,6 +35,22 @@ namespace System.ActionPattern
             return () => p.GetDefault()(source);
         }
 
+        public static Func<TArgument, TResult> Match<T, TArgument, TResult>(this T source, IActionPattern<T, Func<T, TArgument, TResult>> pattern)
+        {
+            var p = pattern as IActionPatternGetter<T, Func<T, TArgument, TResult>>;
+
+            if (p == null)
+                throw new Exception();
+
+            if (ReferenceEquals(source, null))
+                return arg => (p.GetCatchNull() ?? p.GetDefault())(default(T), arg);
+
+            if (p.GetPatterns().ContainsKey(source))
+                return arg => p.GetPatterns()[source](source, arg);
+
+            return arg => p.GetDefault()(source, arg);
+        }
+
         public static Action Match<T>(this T source, IActionPattern<Func<T, bool>, Action<T>> pattern)
         {
             var p = pattern as IActionPatternGetter<Func<T, bool>, Action<T>>;
@@ -67,6 +83,23 @@ namespace System.ActionPattern
                     return () => x.Value(source);
 
             return () => p.GetDefault()(source);
+        }
+
+        public static Func<TArgument, TResult> Match<T, TArgument, TResult>(this T source, IActionPattern<Func<T, bool>, Func<T, TArgument, TResult>> pattern)
+        {
+            var p = pattern as IActionPatternGetter<Func<T, bool>, Func<T, TArgument, TResult>>;
+
+            if (p == null)
+                throw new Exception();
+
+            if (ReferenceEquals(source, null))
+                return arg => (p.GetCatchNull() ?? p.GetDefault())(default(T), arg);
+
+            foreach (var x in p.GetPatterns())
+                if (x.Key(source))
+                    return arg => x.Value(source, arg);
+
+            return arg => p.GetDefault()(source, arg);
         }
 
         public static Action Match<TSource, T>(this TSource source, ISelectedActionPattern<TSource, T, Action<T>> pattern)

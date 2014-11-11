@@ -89,9 +89,25 @@ namespace ActionPatternTest
                 string.Empty.Match(ActionPattern<string, int, int>
                     .Pattern(string.Empty, (x, y) => x.Length + y))(5), 5);
 
-            Assert.AreEqual(string.Empty.Length,
+            Assert.AreEqual(string.Empty.Length + 5,
                 string.Empty.Match(ActionPattern<string, int, int>
-                    .Pattern(x => x == string.Empty, (x, y) => x.Length + y))(5), 5);
+                    .Pattern(x => x == string.Empty, (x, y) => x.Length + y))(5));
+        }
+
+        [TestMethod]
+        public void TestMethod10()
+        {
+            var p1 = ActionPattern<string, int, int, int>
+                    .Select(x => x.Length, y => y)
+                    .Pattern((x, y) => x == y, (x, y) => 0)
+                    .Default((x, y) => x + y);
+            Assert.AreEqual(string.Empty.Length + 5, string.Empty.Match(p1)(5));
+
+            var p2 = ActionPattern<string, int, int>
+                    .Select(x => x.Length, y => y)
+                    .Pattern((x, y) => x != y, (x, y) => Assert.Fail())
+                    .Default((x, y) => Assert.AreEqual(x, y));
+            string.Empty.Match(p2)(0);
         }
     }
 }

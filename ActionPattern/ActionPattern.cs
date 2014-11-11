@@ -49,5 +49,17 @@ namespace System.ActionPattern
         {
             return new SelectedKeyActionPattern<T1, T2, T3>(selector);
         }
+        public static ISelectedActionPattern<T1, T2, Func<T3, T3, bool>, Action<T3, T3>> Select(Func<T1, T3> primarySelector, Func<T2, T3> secondarySelector)
+        {
+            return new DoubleSelectedKeyActionPattern<T1, T2, T3>(primarySelector, secondarySelector);
+        }
+    }
+
+    public static class ActionPattern<T1, T2, T3, T4>
+    {
+        public static ISelectedActionPattern<T1, T2, Func<T3, T3, bool>, Func<T3, T3, T4>> Select(Func<T1, T3> primarySelector, Func<T2, T3> secondarySelector)
+        {
+            return new DoubleSelectedKeyActionPattern<T1, T2, T3, T4>(primarySelector, secondarySelector);
+        }
     }
 }

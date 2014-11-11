@@ -8,18 +8,18 @@ namespace System.ActionPattern
         , IDisposable where TAction : class
     {
         protected Dictionary<TKey, TAction> Patterns = new Dictionary<TKey, TAction>();
-        protected TAction catchNullAction = null;
-        protected TAction defaultAction = null;
+        protected TAction CatchNullAction = null;
+        protected TAction DefaultAction = null;
         
         public void Dispose()
         {
-            catchNullAction = null;
-            defaultAction = null;
+            CatchNullAction = null;
+            DefaultAction = null;
         }
 
         public IDictionary<TKey, TAction> GetPatterns() { return Patterns; }
-        public TAction GetCatchNull() { return catchNullAction; }
-        public TAction GetDefault() { return defaultAction; }
+        public TAction GetCatchNull() { return CatchNullAction; }
+        public TAction GetDefault() { return DefaultAction; }
 
         public IActionPattern<TKey, TAction> Pattern(TKey predicate, TAction action)
         {
@@ -29,43 +29,76 @@ namespace System.ActionPattern
 
         public IActionPattern<TKey, TAction> CatchNull(TAction action)
         {
-            catchNullAction = action;
+            CatchNullAction = action;
             return this;
         }
 
         public IActionPattern<TKey, TAction> Default(TAction action)
         {
-            defaultAction = action;
+            DefaultAction = action;
             return this;
         }
     }
 
-    internal abstract class SelectedActionPatternBase<TSource, TKey, TAction>
-        : ActionPatternBase<TKey, TAction>
-        , ISelectedActionPattern<TSource, TKey, TAction>
-        , ISelectedActionPatternGetter<TSource, TKey, TAction>
+    internal abstract class SelectedActionPatternBase<TSource, TSelected, TAction>
+        : ActionPatternBase<TSelected, TAction>
+        , ISelectedActionPattern<TSource, TSelected, TAction>
+        , ISelectedActionPatternGetter<TSource, TSelected, TAction>
         where TAction : class
     {
-        protected Func<TSource, TKey> Selector = null;
+        protected Func<TSource, TSelected> Selector = null;
         
-        public Func<TSource, TKey> GetSelector() { return Selector; }
+        public Func<TSource, TSelected> GetSelector() { return Selector; }
 
-        public new ISelectedActionPattern<TSource, TKey, TAction> Pattern(TKey predicate, TAction action)
+        public new ISelectedActionPattern<TSource, TSelected, TAction> Pattern(TSelected predicate, TAction action)
         {
             Patterns.Add(predicate, action);
             return this;
         }
 
-        public new ISelectedActionPattern<TSource, TKey, TAction> CatchNull(TAction action)
+        public new ISelectedActionPattern<TSource, TSelected, TAction> CatchNull(TAction action)
         {
-            catchNullAction = action;
+            CatchNullAction = action;
             return this;
         }
 
-        public new ISelectedActionPattern<TSource, TKey, TAction> Default(TAction action)
+        public new ISelectedActionPattern<TSource, TSelected, TAction> Default(TAction action)
         {
-            defaultAction = action;
+            DefaultAction = action;
             return this;
         }
+    }
+
+    internal abstract class DoubleSelectedActionPatternBase<TPrimary, TSecondary, TSelected, TAction>
+        : ActionPatternBase<Func<TSelected, TSelected, bool>, TAction>
+        , ISelectedActionPattern<TPrimary, TSecondary, Func<TSelected, TSelected, bool>, TAction> where TAction : class
+    {
+        protected Func<TPrimary, TSelected> Primary = null;
+        protected Func<TSecondary, TSelected> Secondary = null;
+
+        public Func<TPrimary, TSelected> GetPrimarySelecter() { return Primary; }
+        public Func<TSecondary, TSelected> GetSecondaryGetPrimarySelecter() { return Secondary; }
+
+        public new ISelectedActionPattern<TPrimary, TSecondary, Func<TSelected, TSelected, bool>, TAction> Pattern(Func<TSelected, TSelected, bool> predicate, TAction action)
+        {
+            Patterns.Add(predicate, action);
+            return this;
+        }
+
+        public new ISelectedActionPattern<TPrimary, TSecondary, Func<TSelected, TSelected, bool>, TAction> CatchNull(TAction action)
+        {
+            CatchNullAction = action;
+            return this;
+        }
+
+        public new ISelectedActionPattern<TPrimary, TSecondary, Func<TSelected, TSelected, bool>, TAction> Default(TAction action)
+        {
+            DefaultAction = action;
+            return this;
+        }
+
+        public Func<TPrimary, TSelected> GetPrimarySelector() { return Primary; }
+
+        public Func<TSecondary, TSelected> GetSecondarySelector() { return Secondary; }
     }
 }

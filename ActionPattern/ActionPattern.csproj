@@ -41,6 +41,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ActionPattern.cs" />
+    <Compile Include="ActionPatternBase.cs" />
     <Compile Include="ActionPatternMatch.cs" />
     <Compile Include="IActionPattern.cs" />
     <Compile Include="KeyActionPattern.cs" />

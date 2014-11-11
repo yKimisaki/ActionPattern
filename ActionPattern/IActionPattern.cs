@@ -9,7 +9,7 @@ namespace System.ActionPattern
         IActionPattern<TPredicate, TAction> Default(TAction action);
     }
 
-    internal interface IActionPatternGetter<TPredicate, TAction> : IActionPattern<TPredicate, TAction>
+    internal interface IActionPatternGetter<TPredicate, TAction>
     {
         IDictionary<TPredicate, TAction> GetPatterns();
         TAction GetCatchNull();
@@ -23,11 +23,8 @@ namespace System.ActionPattern
         ISelectedActionPattern<TSource, TPredicate, TAction> Default(TAction action);
     }
 
-    internal interface ISelectedActionPatternGetter<TSource, TPredicate, TAction> : ISelectedActionPattern<TSource, TPredicate, TAction>
+    internal interface ISelectedActionPatternGetter<TSource, TPredicate, TAction> : IActionPatternGetter<TPredicate, TAction>
     {
         Func<TSource, TPredicate> GetSelector();
-        IDictionary<TPredicate, TAction> GetPatterns();
-        TAction GetCatchNull();
-        TAction GetDefault();
     }
 }

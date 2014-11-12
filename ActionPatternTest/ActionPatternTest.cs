@@ -119,9 +119,8 @@ namespace ActionPatternTest
             "m".Match(p1)("m");
 
             var p2 = ActionPattern<string, string, int>
-                .Pattern((x, y) => x == y, (x, y) => x.Length + y.Length)
-                .Default((x, y) => 0);
-            "m".Match(p2)("m");
+                .Pattern((x, y) => x == y, (x, y) => x.Length + y.Length);
+            "m".Match(p2)(null);
         }
     }
 }

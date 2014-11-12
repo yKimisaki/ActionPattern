@@ -28,4 +28,22 @@ namespace System.ActionPattern
             Patterns.Add(predicate, action);
         }
     }
+
+    internal class TwoArgsPredicateActionPattern<TPrimary, TSecondary>
+        : ActionPatternBase<Func<TPrimary, TSecondary, bool>, Action<TPrimary, TSecondary>>
+    {
+        public TwoArgsPredicateActionPattern(Func<TPrimary, TSecondary, bool> predicate, Action<TPrimary, TSecondary> action)
+        {
+            Patterns.Add(predicate, action);
+        }
+    }
+
+    internal class TwoArgsPredicateActionPattern<TPrimary, TSecondary, TResult>
+        : ActionPatternBase<Func<TPrimary, TSecondary, bool>, Func<TPrimary, TSecondary, TResult>>
+    {
+        public TwoArgsPredicateActionPattern(Func<TPrimary, TSecondary, bool> predicate, Func<TPrimary, TSecondary, TResult> action)
+        {
+            Patterns.Add(predicate, action);
+        }
+    }
 }

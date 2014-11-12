@@ -27,7 +27,12 @@ namespace System.ActionPattern
             return new PredicateActionPattern<T1, T2>(predicate, func);
         }
 
-        public static ISelectedActionPattern<T1, T2, Action<T2>> Select<T2>(Func<T1, T2> selector)
+        public static IActionPattern<Func<T1, T2, bool>, Action<T1, T2>> Pattern(Func<T1, T2, bool> predicate, Action<T1, T2> action)
+        {
+            return new TwoArgsPredicateActionPattern<T1, T2>(predicate, action);
+        }
+
+        public static ISelectedActionPattern<T1, T2, Action<T2>> Select(Func<T1, T2> selector)
         {
             return new SelectedKeyActionPattern<T1, T2>(selector);
         }
@@ -45,10 +50,16 @@ namespace System.ActionPattern
             return new PredicateActionPattern<T1, T2, T3>(predicate, func);
         }
 
+        public static IActionPattern<Func<T1, T2, bool>, Func<T1, T2, T3>> Pattern(Func<T1, T2, bool> predicate, Func<T1, T2, T3> func)
+        {
+            return new TwoArgsPredicateActionPattern<T1, T2, T3>(predicate, func);
+        }
+
         public static ISelectedActionPattern<T1, T2, Func<T2, T3>> Select(Func<T1, T2> selector)
         {
             return new SelectedKeyActionPattern<T1, T2, T3>(selector);
         }
+
         public static ISelectedActionPattern<T1, T2, Func<T3, T3, bool>, Action<T3, T3>> Select(Func<T1, T3> primarySelector, Func<T2, T3> secondarySelector)
         {
             return new DoubleSelectedKeyActionPattern<T1, T2, T3>(primarySelector, secondarySelector);

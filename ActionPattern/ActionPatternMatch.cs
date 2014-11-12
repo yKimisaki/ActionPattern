@@ -9,7 +9,7 @@ namespace System.ActionPattern
             if (p == null)
                 throw new Exception();
 
-            if (ReferenceEquals(source, null))
+            if (Object.Equals(source, null))
                 return () => (p.GetCatchNull() ?? p.GetDefault())(default(T));
 
             if (p.GetPatterns().ContainsKey(source))
@@ -26,7 +26,7 @@ namespace System.ActionPattern
             if (p == null)
                 throw new Exception();
 
-            if (ReferenceEquals(source, null))
+            if (Object.Equals(source, null))
                 return () => (p.GetCatchNull() ?? p.GetDefault())(default(T));
 
             if (p.GetPatterns().ContainsKey(source))
@@ -43,7 +43,7 @@ namespace System.ActionPattern
             if (p == null)
                 throw new Exception();
 
-            if (ReferenceEquals(source, null))
+            if (Object.Equals(source, null))
                 return arg => (p.GetCatchNull() ?? p.GetDefault())(default(T), arg);
 
             if (p.GetPatterns().ContainsKey(source))
@@ -60,7 +60,7 @@ namespace System.ActionPattern
             if (p == null)
                 throw new Exception();
 
-            if (ReferenceEquals(source, null))
+            if (Object.Equals(source, null))
                 return () => (p.GetCatchNull() ?? p.GetDefault())(default(T));
 
             foreach (var x in p.GetPatterns())
@@ -78,7 +78,7 @@ namespace System.ActionPattern
             if (p == null)
                 throw new Exception();
 
-            if (ReferenceEquals(source, null))
+            if (Object.Equals(source, null))
                 return () => (p.GetCatchNull() ?? p.GetDefault())(default(T));
 
             foreach (var x in p.GetPatterns())
@@ -96,7 +96,7 @@ namespace System.ActionPattern
             if (p == null)
                 throw new Exception();
 
-            if (ReferenceEquals(source, null))
+            if (Object.Equals(source, null))
                 return arg => (p.GetCatchNull() ?? p.GetDefault())(default(T), arg);
 
             foreach (var x in p.GetPatterns())
@@ -108,13 +108,58 @@ namespace System.ActionPattern
             return arg => p.GetDefault()(source, arg);
         }
 
+        public static Action<TSecondary> Match<TPrimary, TSecondary>(this TPrimary source, IActionPattern<Func<TPrimary, TSecondary, bool>, Action<TPrimary, TSecondary>> pattern)
+        {
+            var p = pattern as IActionPatternGetter<Func<TPrimary, TSecondary, bool>, Action<TPrimary, TSecondary>>;
+            if (p == null)
+                throw new Exception();
+
+            return secondary =>
+            {
+                if (Object.Equals(source, null) || Object.Equals(secondary, null))
+                    (p.GetCatchNull() ?? p.GetDefault())(default(TPrimary), default(TSecondary));
+
+                foreach (var x in p.GetPatterns())
+                    if (x.Key(source, secondary))
+                    {
+                        x.Value(source, secondary);
+                        return;
+                    }
+
+                if (p.GetDefault() == null)
+                    return;
+                p.GetDefault()(source, secondary);
+            };
+        }
+
+        public static Func<TSecondary, TResult> Match<TPrimary, TSecondary, TResult>(this TPrimary source, IActionPattern<Func<TPrimary, TSecondary, bool>, Func<TPrimary, TSecondary, TResult>> pattern)
+        {
+            var p = pattern as IActionPatternGetter<Func<TPrimary, TSecondary, bool>, Func<TPrimary, TSecondary, TResult>>;
+            if (p == null)
+                throw new Exception();
+
+            return secondary =>
+            {
+                if (Object.Equals(source, null) || Object.Equals(secondary, null))
+                    return (p.GetCatchNull() ?? p.GetDefault() ?? ((x, y) => default(TResult)))(default(TPrimary), default(TSecondary));
+
+                foreach (var x in p.GetPatterns())
+                    if (x.Key(source, secondary))
+                    {
+                        return x.Value(source, secondary);
+                    }
+
+                return (p.GetDefault() ?? ((x, y) => default(TResult)))(source, secondary);
+            };
+        }
+
         public static Action Match<TSource, T>(this TSource source, ISelectedActionPattern<TSource, T, Action<T>> pattern)
         {
             var p = pattern as ISelectedActionPatternGetter<TSource, T, Action<T>>;
             if (p == null)
                 throw new Exception();
 
-            if (ReferenceEquals(source, null))
+            if (Object.Equals(source, null))
                 return () => (p.GetCatchNull() ?? p.GetDefault())(default(T));
 
             var selected = p.GetSelector()(source);
@@ -132,7 +177,7 @@ namespace System.ActionPattern
             if (p == null)
                 throw new Exception();
 
-            if (ReferenceEquals(source, null))
+            if (Object.Equals(source, null))
                 return () => (p.GetCatchNull() ?? p.GetDefault())(default(T));
 
             var selected = p.GetSelector()(source);
@@ -150,7 +195,7 @@ namespace System.ActionPattern
             if (p == null)
                 throw new Exception();
 
-            if (ReferenceEquals(source, null))
+            if (Object.Equals(source, null))
                 return secondary => (p.GetCatchNull() ?? p.GetDefault())(default(TSelected), default(TSelected));
 
             var primary = p.GetPrimarySelector()(source);
@@ -160,7 +205,10 @@ namespace System.ActionPattern
 
                 foreach (var x in p.GetPatterns())
                     if (x.Key(primary, selectedSecondary))
+                    {
                         x.Value(primary, selectedSecondary);
+                        return;
+                    }
 
                 if (p.GetDefault() == null)
                     return;
@@ -174,12 +222,12 @@ namespace System.ActionPattern
             if (p == null)
                 throw new Exception();
 
-            if (ReferenceEquals(source, null))
-                return secondary => (p.GetCatchNull() ?? p.GetDefault())(default(TSelected), default(TSelected));
-
             var primary = p.GetPrimarySelector()(source);
             return secondary =>
             {
+                if (Object.Equals(source, null) || Object.Equals(secondary, null))
+                    return (p.GetCatchNull() ?? p.GetDefault())(default(TSelected), default(TSelected));
+
                 var selectedSecondary = p.GetSecondarySelector()(secondary);
 
                 foreach (var x in p.GetPatterns())

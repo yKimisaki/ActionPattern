@@ -97,13 +97,13 @@ namespace ActionPatternTest
         [TestMethod]
         public void TestMethod10()
         {
-            var p1 = ActionPattern<string, int, float, int, int>
-                    .Select(x => x.Length, y => (int)y)
+            var p1 = ActionPattern<string, int, int, float, int>
+                    .Select(x => x.Length, y => y)
                     .Pattern((x, y) => x == y, (x, y) => 0)
-                    .Default((x, y) => x + y);
+                    .Default((x, y) => x + (int)y);
             Assert.AreEqual(string.Empty.Length + 5, string.Empty.Match(p1)(5));
 
-            var p2 = ActionPattern<string, int, int, int>
+            var p2 = ActionPattern<string, int, int, float>
                     .Select(x => x.Length, y => y)
                     .Pattern((x, y) => x != y, (x, y) => Assert.Fail())
                     .Default((x, y) => Assert.AreEqual(x, y));

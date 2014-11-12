@@ -173,7 +173,7 @@ namespace System.ActionPattern
 
         public static Action<TSecondary> Match<TPrimary, TSecondary, TSelected>(this TPrimary source, ISelectedActionPattern<TPrimary, TSecondary, Func<TSelected, TSelected, bool>, Action<TSelected, TSelected>> pattern)
         {
-            var p = pattern as DoubleSelectedActionPatternBase<TPrimary, TSecondary, TSelected, Action<TSelected, TSelected>>;
+            var p = pattern as DoubleSelectedActionPatternBase<TPrimary, TSelected, TSecondary, TSelected, Action<TSelected, TSelected>>;
             if (p == null)
                 throw new Exception();
 
@@ -198,7 +198,7 @@ namespace System.ActionPattern
     
         public static Func<TSecondary, TResult> Match<TPrimary, TSecondary, TSelected, TResult>(this TPrimary source, ISelectedActionPattern<TPrimary, TSecondary, Func<TSelected, TSelected, bool>, Func<TSelected, TSelected, TResult>> pattern)
         {
-            var p = pattern as DoubleSelectedActionPatternBase<TPrimary, TSecondary, TSelected, Func<TSelected, TSelected, TResult>>;
+            var p = pattern as DoubleSelectedActionPatternBase<TPrimary, TSelected, TSecondary, TSelected, Func<TSelected, TSelected, TResult>>;
             if (p == null)
                 throw new Exception();
 

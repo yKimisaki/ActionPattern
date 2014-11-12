@@ -69,36 +69,35 @@ namespace System.ActionPattern
         }
     }
 
-    internal abstract class DoubleSelectedActionPatternBase<TPrimary, TSecondary, TSelected, TAction>
-        : ActionPatternBase<Func<TSelected, TSelected, bool>, TAction>
-        , ISelectedActionPattern<TPrimary, TSecondary, Func<TSelected, TSelected, bool>, TAction> where TAction : class
+    internal abstract class DoubleSelectedActionPatternBase<TPrimary, TPrimarySelected, TSecondary, TSecondarySelected, TAction>
+        : ActionPatternBase<Func<TPrimarySelected, TSecondarySelected, bool>, TAction>
+        , ISelectedActionPattern<TPrimary, TSecondary, Func<TPrimarySelected, TSecondarySelected, bool>, TAction> where TAction : class
     {
-        protected Func<TPrimary, TSelected> Primary = null;
-        protected Func<TSecondary, TSelected> Secondary = null;
+        protected Func<TPrimary, TPrimarySelected> Primary = null;
+        protected Func<TSecondary, TSecondarySelected> Secondary = null;
 
-        public Func<TPrimary, TSelected> GetPrimarySelecter() { return Primary; }
-        public Func<TSecondary, TSelected> GetSecondaryGetPrimarySelecter() { return Secondary; }
+        public Func<TPrimary, TPrimarySelected> GetPrimarySelecter() { return Primary; }
+        public Func<TSecondary, TSecondarySelected> GetSecondaryGetPrimarySelecter() { return Secondary; }
 
-        public new ISelectedActionPattern<TPrimary, TSecondary, Func<TSelected, TSelected, bool>, TAction> Pattern(Func<TSelected, TSelected, bool> predicate, TAction action)
+        public new ISelectedActionPattern<TPrimary, TSecondary, Func<TPrimarySelected, TSecondarySelected, bool>, TAction> Pattern(Func<TPrimarySelected, TSecondarySelected, bool> predicate, TAction action)
         {
             Patterns.Add(predicate, action);
             return this;
         }
 
-        public new ISelectedActionPattern<TPrimary, TSecondary, Func<TSelected, TSelected, bool>, TAction> CatchNull(TAction action)
+        public new ISelectedActionPattern<TPrimary, TSecondary, Func<TPrimarySelected, TSecondarySelected, bool>, TAction> CatchNull(TAction action)
         {
             CatchNullAction = action;
             return this;
         }
 
-        public new ISelectedActionPattern<TPrimary, TSecondary, Func<TSelected, TSelected, bool>, TAction> Default(TAction action)
+        public new ISelectedActionPattern<TPrimary, TSecondary, Func<TPrimarySelected, TSecondarySelected, bool>, TAction> Default(TAction action)
         {
             DefaultAction = action;
             return this;
         }
 
-        public Func<TPrimary, TSelected> GetPrimarySelector() { return Primary; }
-
-        public Func<TSecondary, TSelected> GetSecondarySelector() { return Secondary; }
+        public Func<TPrimary, TPrimarySelected> GetPrimarySelector() { return Primary; }
+        public Func<TSecondary, TSecondarySelected> GetSecondarySelector() { return Secondary; }
     }
 }

@@ -20,20 +20,20 @@ namespace System.ActionPattern
         }
     }
 
-    internal class DoubleSelectedKeyActionPattern<TPrimary, TSecondary, TSelected>
-        : DoubleSelectedActionPatternBase<TPrimary, TSecondary, TSelected, Action<TSelected, TSelected>>
+    internal class DoubleSelectedKeyActionPattern<TPrimary, TPrimarySelected, TSecondary, TSecondarySelected>
+        : DoubleSelectedActionPatternBase<TPrimary, TPrimarySelected, TSecondary, TSecondarySelected, Action<TPrimarySelected, TSecondarySelected>>
     {
-        public DoubleSelectedKeyActionPattern(Func<TPrimary, TSelected> primary, Func<TSecondary, TSelected> secondary)
+        public DoubleSelectedKeyActionPattern(Func<TPrimary, TPrimarySelected> primary, Func<TSecondary, TSecondarySelected> secondary)
         {
             Primary = primary;
             Secondary = secondary;
         }
     }
 
-    internal class DoubleSelectedKeyActionPattern<TPrimary, TSecondary, TSelected, TResult>
-        : DoubleSelectedActionPatternBase<TPrimary, TSecondary, TSelected, Func<TSelected, TSelected, TResult>>
+    internal class DoubleSelectedKeyActionPattern<TPrimary, TPrimarySelected, TSecondary, TSecondarySelected, TResult>
+        : DoubleSelectedActionPatternBase<TPrimary, TPrimarySelected, TSecondary, TSecondarySelected, Func<TPrimarySelected, TSecondarySelected, TResult>>
     {
-        public DoubleSelectedKeyActionPattern(Func<TPrimary, TSelected> primary, Func<TSecondary, TSelected> secondary)
+        public DoubleSelectedKeyActionPattern(Func<TPrimary, TPrimarySelected> primary, Func<TSecondary, TSecondarySelected> secondary)
         {
             Primary = primary;
             Secondary = secondary;

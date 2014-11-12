@@ -58,19 +58,22 @@ namespace System.ActionPattern
         public static ISelectedActionPattern<T1, T2, Func<T2, T3>> Select(Func<T1, T2> selector)
         {
             return new SelectedKeyActionPattern<T1, T2, T3>(selector);
-        }
-
-        public static ISelectedActionPattern<T1, T2, Func<T3, T3, bool>, Action<T3, T3>> Select(Func<T1, T3> primarySelector, Func<T2, T3> secondarySelector)
-        {
-            return new DoubleSelectedKeyActionPattern<T1, T2, T3>(primarySelector, secondarySelector);
-        }
+       } 
     }
 
     public static class ActionPattern<T1, T2, T3, T4>
     {
-        public static ISelectedActionPattern<T1, T2, Func<T3, T3, bool>, Func<T3, T3, T4>> Select(Func<T1, T3> primarySelector, Func<T2, T3> secondarySelector)
+        public static ISelectedActionPattern<T1, T3, Func<T2, T4, bool>, Action<T2, T4>> Select(Func<T1, T2> primarySelector, Func<T3, T4> secondarySelector)
         {
             return new DoubleSelectedKeyActionPattern<T1, T2, T3, T4>(primarySelector, secondarySelector);
+        }
+    }
+
+    public static class ActionPattern<T1, T2, T3, T4, T5>
+    {
+        public static ISelectedActionPattern<T1, T3, Func<T2, T4, bool>, Func<T2, T4, T5>> Select(Func<T1, T2> primarySelector, Func<T3, T4> secondarySelector)
+        {
+            return new DoubleSelectedKeyActionPattern<T1, T2, T3, T4, T5>(primarySelector, secondarySelector);
         }
     }
 }

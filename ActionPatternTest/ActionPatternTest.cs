@@ -8,22 +8,6 @@ namespace ActionPatternTest
     public class ActionPatternTest
     {
         [TestMethod]
-        public void TestMethod1()
-        {
-            1.Pattern(1, x => Assert.AreEqual(1, x));
-
-            1.Pattern(0, x => Assert.Fail());
-            1.Pattern(2, x => Assert.Fail());
-        }
-
-        [TestMethod]
-        public void TestMethod2()
-        {
-            1.Pattern(x => x == 1, x => Assert.AreEqual(1, x));
-            1.Pattern(x => x == 0, x => Assert.Fail());
-            1.Pattern(x => x == 2, x => Assert.Fail());
-        }
-        [TestMethod]
         public void TestMethod3()
         {
             1.Match(ActionPattern<int>

@@ -96,7 +96,7 @@ namespace ActionPatternTest
         {
             var evenCount = 0;
             var p = ActionPattern<int>.Pattern(x => x % 2 == 0, x => ++evenCount);
-            var tracing = Enumerable.Range(0, 5).Trace(p);
+            var tracing = Enumerable.Range(0, 5).MatchTrace(p);
             Assert.AreEqual(0, evenCount);
             tracing.ToList();
             Assert.AreEqual(3, evenCount);

@@ -7,7 +7,7 @@
     <ProjectGuid>{CB0A8513-A013-4313-9779-5CE4D7AA197E}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>System.ActionPattern</RootNamespace>
+    <RootNamespace>Tonari.ActionPattern</RootNamespace>
     <AssemblyName>ActionPattern</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
@@ -45,10 +45,14 @@
     <Compile Include="ActionPatternMatch.cs" />
     <Compile Include="IActionPattern.cs" />
     <Compile Include="KeyActionPattern.cs" />
-    <Compile Include="Linq.cs" />
+    <Compile Include="Linq.Trace.cs" />
+    <Compile Include="Linq.MatchTrace.cs" />
     <Compile Include="PredicateActionPattern.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SimplePattern.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Linq.MatchSelect.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -48,7 +48,6 @@
     <Compile Include="Linq.cs" />
     <Compile Include="PredicateActionPattern.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SelectedKeyActionPattern.cs" />
     <Compile Include="SimplePattern.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

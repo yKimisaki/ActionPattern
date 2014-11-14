@@ -20,10 +20,10 @@ namespace System.ActionPattern
         }
     }
 
-    internal class KeyActionPattern<T, TArgument, TResult>
-        : ActionPatternBase<T, Func<T, TArgument, TResult>>
+    internal class KeyActionPattern<TPrimary, TSecondary, TResult>
+        : ActionPatternBase<TPrimary, Func<TPrimary, TSecondary, TResult>>
     {
-        public KeyActionPattern(T key, Func<T, TArgument, TResult> action)
+        public KeyActionPattern(TPrimary key, Func<TPrimary, TSecondary, TResult> action)
         {
             Patterns.Add(key, action);
         }

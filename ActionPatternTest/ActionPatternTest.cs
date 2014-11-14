@@ -60,22 +60,6 @@ namespace ActionPatternTest
         }
 
         [TestMethod]
-        public void TestMethod7()
-        {
-            string.Empty.Match(ActionPattern<string, int>
-                .Select(x => x.Length)
-                .Pattern(string.Empty.Length, x => Assert.AreEqual(string.Empty.Length, x))
-                .CatchNull(x => Assert.Fail())
-                .Default(x => Assert.Fail()))();
-
-            ((string)null).Match(ActionPattern<string, int>
-                .Select(x => x.Length)
-                .Pattern(0, x => Assert.Fail())
-                .CatchNull(x => Assert.AreEqual(default(int), x))
-                .Default(x => Assert.Fail()))();
-        }
-
-        [TestMethod]
         public void TestMethod8()
         {
             Assert.AreEqual(string.Empty.Length,
@@ -93,22 +77,6 @@ namespace ActionPatternTest
             Assert.AreEqual(string.Empty.Length + 5,
                 string.Empty.Match(ActionPattern<string, int, int>
                     .Pattern(x => x == string.Empty, (x, y) => x.Length + y))(5));
-        }
-
-        [TestMethod]
-        public void TestMethod10()
-        {
-            var p1 = ActionPattern<string, int, int, float, int>
-                    .Select(x => x.Length, y => y)
-                    .Pattern((x, y) => x == y, (x, y) => 0)
-                    .Default((x, y) => x + (int)y);
-            Assert.AreEqual(string.Empty.Length + 5, string.Empty.Match(p1)(5));
-
-            var p2 = ActionPattern<string, int, int, float>
-                    .Select(x => x.Length, y => y)
-                    .Pattern((x, y) => x != y, (x, y) => Assert.Fail())
-                    .Default((x, y) => Assert.AreEqual(x, y));
-            string.Empty.Match(p2)(0);
         }
 
         [TestMethod]

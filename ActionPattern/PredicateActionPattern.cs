@@ -20,10 +20,19 @@ namespace System.ActionPattern
         }
     }
 
-    internal class PredicateActionPattern<T, TArgument, TResult>
-        : ActionPatternBase<Func<T, bool>, Func<T, TArgument, TResult>>
+    internal class ArgPredicateActionPattern<TPrimary, TSecondary>
+        : ActionPatternBase<Func<TPrimary, bool>, Action<TPrimary, TSecondary>>
     {
-        public PredicateActionPattern(Func<T, bool> predicate, Func<T, TArgument, TResult> action)
+        public ArgPredicateActionPattern(Func<TPrimary, bool> predicate, Action<TPrimary, TSecondary> action)
+        {
+            Patterns.Add(predicate, action);
+        }
+    }
+
+    internal class ArgPredicateActionPattern<TPrimary, TSecondary, TResult>
+        : ActionPatternBase<Func<TPrimary, bool>, Func<TPrimary, TSecondary, TResult>>
+    {
+        public ArgPredicateActionPattern(Func<TPrimary, bool> predicate, Func<TPrimary, TSecondary, TResult> action)
         {
             Patterns.Add(predicate, action);
         }

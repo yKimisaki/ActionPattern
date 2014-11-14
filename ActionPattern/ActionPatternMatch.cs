@@ -80,6 +80,22 @@ namespace System.ActionPattern
             return () => (p.GetDefault() ?? (x => default(TResult)))(source);
         }
 
+        public static Action<TSecondary> Match<TPrimary, TSecondary>(this TPrimary source, IActionPattern<Func<TPrimary, bool>, Action<TPrimary, TSecondary>> pattern)
+        {
+            var p = pattern as IActionPatternGetter<Func<TPrimary, bool>, Action<TPrimary, TSecondary>>;
+            if (p == null)
+                throw new Exception();
+
+            if (Object.Equals(source, null))
+                return arg => (p.GetCatchNull() ?? p.GetDefault() ?? ((x, y) => { }))(default(TPrimary), arg);
+
+            foreach (var x in p.GetPatterns())
+                if (x.Key(source))
+                    return arg => x.Value(source, arg);
+
+            return arg => (p.GetDefault() ?? ((x, y) => { }))(source, arg);
+        }
+
         public static Func<TSecondary, TResult> Match<TPrimary, TSecondary, TResult>(this TPrimary source, IActionPattern<Func<TPrimary, bool>, Func<TPrimary, TSecondary, TResult>> pattern)
         {
             var p = pattern as IActionPatternGetter<Func<TPrimary, bool>, Func<TPrimary, TSecondary, TResult>>;
@@ -136,85 +152,6 @@ namespace System.ActionPattern
                     }
 
                 return (p.GetDefault() ?? ((x, y) => default(TResult)))(source, secondary);
-            };
-        }
-
-        public static Action Match<T, TSelected>(this T source, ISelectedActionPattern<T, TSelected, Action<TSelected>> pattern)
-        {
-            var p = pattern as ISelectedActionPatternGetter<T, TSelected, Action<TSelected>>;
-            if (p == null)
-                throw new Exception();
-
-            if (Object.Equals(source, null))
-                return () => (p.GetCatchNull() ?? p.GetDefault() ?? (x => { }))(default(TSelected));
-
-            var selected = p.GetSelector()(source);
-            if (p.GetPatterns().ContainsKey(selected))
-                return () => p.GetPatterns()[selected](selected);
-
-            return () => (p.GetDefault() ?? (x => { }))(selected);
-        }
-
-        public static Func<TResult> Match<T, TSelected, TResult>(this T source, ISelectedActionPattern<T, TSelected, Func<TSelected, TResult>> pattern)
-        {
-            var p = pattern as ISelectedActionPatternGetter<T, TSelected, Func<TSelected, TResult>>;
-            if (p == null)
-                throw new Exception();
-
-            if (Object.Equals(source, null))
-                return () => (p.GetCatchNull() ?? p.GetDefault() ?? (x => default(TResult)))(default(TSelected));
-
-            var selected = p.GetSelector()(source);
-            if (p.GetPatterns().ContainsKey(selected))
-                return () => p.GetPatterns()[selected](selected);
-
-            return () => (p.GetDefault() ?? (x => default(TResult)))(selected);
-        }
-
-        public static Action<TSecondary> Match<TPrimary, TPrimarySelected, TSecondary, TSecondarySelected>(this TPrimary source, ISelectedActionPattern<TPrimary, TSecondary, Func<TPrimarySelected, TSecondarySelected, bool>, Action<TPrimarySelected, TSecondarySelected>> pattern)
-        {
-            var p = pattern as DoubleSelectedActionPatternBase<TPrimary, TPrimarySelected, TSecondary, TSecondarySelected, Action<TPrimarySelected, TSecondarySelected>>;
-            if (p == null)
-                throw new Exception();
-
-            if (Object.Equals(source, null))
-                return secondary => (p.GetCatchNull() ?? p.GetDefault() ?? ((x, y) => { }))(default(TPrimarySelected), default(TSecondarySelected));
-
-            var primary = p.GetPrimarySelector()(source);
-            return secondary =>
-            {
-                var selectedSecondary = p.GetSecondarySelector()(secondary);
-
-                foreach (var x in p.GetPatterns())
-                    if (x.Key(primary, selectedSecondary))
-                    {
-                        x.Value(primary, selectedSecondary);
-                        return;
-                    }
-
-                (p.GetDefault() ?? ((x, y) => { }))(primary, selectedSecondary);
-            };
-        }
-
-        public static Func<TSecondary, TResult> Match<TPrimary, TPrimarySelected, TSecondary, TSecondarySelected, TResult>(this TPrimary source, ISelectedActionPattern<TPrimary, TSecondary, Func<TPrimarySelected, TSecondarySelected, bool>, Func<TPrimarySelected, TSecondarySelected, TResult>> pattern)
-        {
-            var p = pattern as DoubleSelectedActionPatternBase<TPrimary, TPrimarySelected, TSecondary, TSecondarySelected, Func<TPrimarySelected, TSecondarySelected, TResult>>;
-            if (p == null)
-                throw new Exception();
-
-            var primary = p.GetPrimarySelector()(source);
-            return secondary =>
-            {
-                if (Object.Equals(source, null) || Object.Equals(secondary, null))
-                    return (p.GetCatchNull() ?? p.GetDefault() ?? ((x, y) => default(TResult)))(default(TPrimarySelected), default(TSecondarySelected));
-
-                var selectedSecondary = p.GetSecondarySelector()(secondary);
-
-                foreach (var x in p.GetPatterns())
-                    if (x.Key(primary, selectedSecondary))
-                        return x.Value(primary, selectedSecondary);
-
-                return (p.GetDefault() ?? ((x, y) => default(TResult)))(primary, selectedSecondary);
             };
         }
     }

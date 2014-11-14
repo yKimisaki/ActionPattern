@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Tonari.ActionPattern
 {
-    internal abstract class ActionPatternBase<TKey, TAction>
+    internal class ActionPatternBase<TKey, TAction>
         : IActionPattern<TKey, TAction>
         , IActionPatternGetter<TKey, TAction>
         , IDisposable where TAction : class
@@ -11,6 +11,11 @@ namespace Tonari.ActionPattern
         protected Dictionary<TKey, TAction> Patterns = new Dictionary<TKey, TAction>();
         protected TAction CatchNullAction = null;
         protected TAction DefaultAction = null;
+
+        public ActionPatternBase(TKey key, TAction action)
+        {
+            Patterns.Add(key, action);
+        }
         
         public void Dispose()
         {

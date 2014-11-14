@@ -1,5 +1,6 @@
-﻿
-namespace System.ActionPattern
+﻿using System;
+
+namespace Tonari.ActionPattern
 {
     public static class ActionPatternMatch
     {

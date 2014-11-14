@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
-namespace System.ActionPattern
+namespace Tonari.ActionPattern
 {
     public static class Linq
     {

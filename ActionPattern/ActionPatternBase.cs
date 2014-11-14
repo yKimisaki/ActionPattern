@@ -1,6 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
-namespace System.ActionPattern
+namespace Tonari.ActionPattern
 {
     internal abstract class ActionPatternBase<TKey, TAction>
         : IActionPattern<TKey, TAction>

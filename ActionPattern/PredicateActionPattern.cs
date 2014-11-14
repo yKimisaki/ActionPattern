@@ -1,6 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
 
-namespace System.ActionPattern
+namespace Tonari.ActionPattern
 {
     internal class PredicateActionPattern<T>
         : ActionPatternBase<Func<T, bool>, Action<T>>

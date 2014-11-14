@@ -1,7 +1,6 @@
-﻿using System;
-using System.ActionPattern;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Linq;
+using Tonari.ActionPattern;
 
 namespace ActionPatternTest
 {

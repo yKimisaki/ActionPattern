@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace System.ActionPattern
+namespace Tonari.ActionPattern
 {
     public interface IActionPattern<TPredicate, TAction>
     {

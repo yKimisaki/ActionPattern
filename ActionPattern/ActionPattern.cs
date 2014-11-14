@@ -1,6 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
 
-namespace System.ActionPattern
+namespace Tonari.ActionPattern
 {
     public static class ActionPattern<T>
     {

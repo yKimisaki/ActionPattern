@@ -80,6 +80,18 @@ namespace Tonari.ActionPattern
             }
         }
 
+        public static IEnumerable<T> Trace<T, TPatternArgument>(this IEnumerable<T> source, IActionPattern<T, Action<T, TPatternArgument>> pattern, TPatternArgument arg)
+        {
+            using (var e = source.GetEnumerator())
+            {
+                while (e.MoveNext())
+                {
+                    e.Current.Match(pattern, arg);
+                    yield return e.Current;
+                }
+            }
+        }
+
         public static IEnumerable<T> Trace<T, TPatternArgument>(this IEnumerable<T> source, IActionPattern<Func<T, bool>, Action<T, TPatternArgument>> pattern, TPatternArgument arg)
         {
             using (var e = source.GetEnumerator())

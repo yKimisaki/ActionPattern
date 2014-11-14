@@ -20,10 +20,19 @@ namespace Tonari.ActionPattern
         }
     }
 
-    internal class KeyActionPattern<TPrimary, TSecondary, TResult>
+    internal class TwoArgsKeyActionPattern<TPrimary, TSecondary>
+        : ActionPatternBase<TPrimary, Action<TPrimary, TSecondary>>
+    {
+        public TwoArgsKeyActionPattern(TPrimary key, Action<TPrimary, TSecondary> action)
+        {
+            Patterns.Add(key, action);
+        }
+    }
+
+    internal class TwoArgsKeyActionPattern<TPrimary, TSecondary, TResult>
         : ActionPatternBase<TPrimary, Func<TPrimary, TSecondary, TResult>>
     {
-        public KeyActionPattern(TPrimary key, Func<TPrimary, TSecondary, TResult> action)
+        public TwoArgsKeyActionPattern(TPrimary key, Func<TPrimary, TSecondary, TResult> action)
         {
             Patterns.Add(key, action);
         }

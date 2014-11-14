@@ -40,6 +40,27 @@ namespace Tonari.ActionPattern
             return (p.GetDefault() ?? (x => default(TResult)))(source);
         }
 
+        public static void Match<TPrimary, TSecondary>(this TPrimary source, IActionPattern<TPrimary, Action<TPrimary, TSecondary>> pattern, TSecondary secondary)
+        {
+            var p = pattern as IActionPatternGetter<TPrimary, Action<TPrimary, TSecondary>>;
+            if (p == null)
+                throw new Exception();
+
+            if (Object.Equals(source, null))
+            {
+                (p.GetCatchNull() ?? p.GetDefault() ?? ((x, y) => { }))(default(TPrimary), secondary);
+                return;
+            }
+
+            if (p.GetPatterns().ContainsKey(source))
+            {
+                p.GetPatterns()[source](source, secondary);
+                return;
+            }
+
+            (p.GetDefault() ?? ((x, y) => { }))(source, secondary);
+        }
+
         public static TResult Match<TPrimary, TSecondary, TResult>(this TPrimary source, IActionPattern<TPrimary, Func<TPrimary, TSecondary, TResult>> pattern, TSecondary secondary)
         {
             var p = pattern as IActionPatternGetter<TPrimary, Func<TPrimary, TSecondary, TResult>>;

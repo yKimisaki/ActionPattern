@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ActionPattern;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.Linq;
 
 namespace ActionPatternTest
 {
@@ -121,6 +122,17 @@ namespace ActionPatternTest
             var p2 = ActionPattern<string, string, int>
                 .Pattern((x, y) => x == y, (x, y) => x.Length + y.Length);
             "m".Match(p2)(null);
+        }
+
+        [TestMethod]
+        public void TestMethod12()
+        {
+            var evenCount = 0;
+            var p = ActionPattern<int>.Pattern(x => x % 2 == 0, x => ++evenCount);
+            var tracing = Enumerable.Range(0, 5).Trace(p);
+            Assert.AreEqual(0, evenCount);
+            tracing.ToList();
+            Assert.AreEqual(3, evenCount);
         }
     }
 }

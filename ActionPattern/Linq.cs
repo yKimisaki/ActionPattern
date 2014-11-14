@@ -62,7 +62,7 @@ namespace Tonari.ActionPattern
             {
                 while (e.MoveNext())
                 {
-                    e.Current.Match(pattern)();
+                    e.Current.Match(pattern);
                     yield return e.Current;
                 }
             }
@@ -74,7 +74,7 @@ namespace Tonari.ActionPattern
             {
                 while (e.MoveNext())
                 {
-                    e.Current.Match(pattern)();
+                    e.Current.Match(pattern);
                     yield return e.Current;
                 }
             }
@@ -86,7 +86,7 @@ namespace Tonari.ActionPattern
             {
                 while (e.MoveNext())
                 {
-                    e.Current.Match(pattern)(arg);
+                    e.Current.Match(pattern, arg);
                     yield return e.Current;
                 }
             }
@@ -98,7 +98,7 @@ namespace Tonari.ActionPattern
             {
                 while (e.MoveNext())
                 {
-                    e.Current.Match(pattern)(arg);
+                    e.Current.Match(pattern, arg);
                     yield return e.Current;
                 }
             }

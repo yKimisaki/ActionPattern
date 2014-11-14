@@ -79,15 +79,26 @@ namespace ActionPatternTest
         }
 
         [TestMethod]
+        [ExpectedException(typeof(UndefinedDefaultPatternException))]
+        public void TestMethod10()
+        {
+            var p = ActionPattern<int>
+                .Pattern(0, x => { });
+            1.Match(p);
+        }
+
+        [TestMethod]
         public void TestMethod11()
         {
             var p1 = ActionPattern<string, string>
                 .Pattern((x, y) => x == y, (x, y) => Assert.AreEqual(x, y))
-                .Default((x, y) => Assert.Fail());
+                .Default((x, y) => { });
             "m".Match(p1, "m");
 
             var p2 = ActionPattern<string, string, int>
-                .Pattern((x, y) => x == y, (x, y) => x.Length + y.Length);
+                .Pattern((x, y) => x == y, (x, y) => x.Length + y.Length)
+                .CatchNull((x, y) => 0)
+                .Default((x, y) => { Assert.Fail(); return 0; });
             "m".Match(p2, null);
         }
 
@@ -95,7 +106,9 @@ namespace ActionPatternTest
         public void TestMethod12()
         {
             var evenCount = 0;
-            var p = ActionPattern<int>.Pattern(x => x % 2 == 0, x => ++evenCount);
+            var p = ActionPattern<int>
+                .Pattern(x => x % 2 == 0, x => ++evenCount)
+                .Default(x => { }); ;
             var tracing = Enumerable.Range(0, 5).MatchTrace(p);
             Assert.AreEqual(0, evenCount);
             tracing.ToList();

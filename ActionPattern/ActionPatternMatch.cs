@@ -12,7 +12,7 @@ namespace Tonari.ActionPattern
 
             if (Object.Equals(source, null))
             {
-                (p.GetCatchNull() ?? p.GetDefault() ?? (x => { }))(default(T));
+                (p.GetCatchNull() ?? p.GetDefault() ?? (x => { throw new UndefinedDefaultPatternException(); }))(default(T));
                 return;
             }
 
@@ -22,7 +22,7 @@ namespace Tonari.ActionPattern
                 return;
             }
 
-            (p.GetDefault() ?? (x => { }))(source);
+            (p.GetDefault() ?? (x => { throw new UndefinedDefaultPatternException(); }))(source);
         }
 
         public static TResult Match<T, TResult>(this T source, IActionPattern<T, Func<T, TResult>> pattern)
@@ -32,12 +32,12 @@ namespace Tonari.ActionPattern
                 throw new Exception();
 
             if (Object.Equals(source, null))
-                return (p.GetCatchNull() ?? p.GetDefault() ?? (x => default(TResult)))(default(T));
+                return (p.GetCatchNull() ?? p.GetDefault() ?? (x => { throw new UndefinedDefaultPatternException(); }))(default(T));
 
             if (p.GetPatterns().ContainsKey(source))
                 return p.GetPatterns()[source](source);
 
-            return (p.GetDefault() ?? (x => default(TResult)))(source);
+            return (p.GetDefault() ?? (x => { throw new UndefinedDefaultPatternException(); }))(source);
         }
 
         public static void Match<TPrimary, TSecondary>(this TPrimary source, IActionPattern<TPrimary, Action<TPrimary, TSecondary>> pattern, TSecondary secondary)
@@ -48,7 +48,7 @@ namespace Tonari.ActionPattern
 
             if (Object.Equals(source, null))
             {
-                (p.GetCatchNull() ?? p.GetDefault() ?? ((x, y) => { }))(default(TPrimary), secondary);
+                (p.GetCatchNull() ?? p.GetDefault() ?? ((x, y) => { throw new UndefinedDefaultPatternException(); }))(default(TPrimary), secondary);
                 return;
             }
 
@@ -58,7 +58,7 @@ namespace Tonari.ActionPattern
                 return;
             }
 
-            (p.GetDefault() ?? ((x, y) => { }))(source, secondary);
+            (p.GetDefault() ?? ((x, y) => { throw new UndefinedDefaultPatternException(); }))(source, secondary);
         }
 
         public static TResult Match<TPrimary, TSecondary, TResult>(this TPrimary source, IActionPattern<TPrimary, Func<TPrimary, TSecondary, TResult>> pattern, TSecondary secondary)
@@ -68,12 +68,12 @@ namespace Tonari.ActionPattern
                 throw new Exception();
 
             if (Object.Equals(source, null))
-                return (p.GetCatchNull() ?? p.GetDefault() ?? ((x, y) => default(TResult)))(default(TPrimary), secondary);
+                return (p.GetCatchNull() ?? p.GetDefault() ?? ((x, y) => { throw new UndefinedDefaultPatternException(); }))(default(TPrimary), secondary);
 
             if (p.GetPatterns().ContainsKey(source))
                 return p.GetPatterns()[source](source, secondary);
 
-            return (p.GetDefault() ?? ((x, y) => default(TResult)))(source, secondary);
+            return (p.GetDefault() ?? ((x, y) => { throw new UndefinedDefaultPatternException(); }))(source, secondary);
         }
 
         public static void Match<T>(this T source, IActionPattern<Func<T, bool>, Action<T>> pattern)
@@ -84,7 +84,7 @@ namespace Tonari.ActionPattern
 
             if (Object.Equals(source, null))
             {
-                (p.GetCatchNull() ?? p.GetDefault() ?? ((x) => { }))(default(T));
+                (p.GetCatchNull() ?? p.GetDefault() ?? ((x) => { throw new UndefinedDefaultPatternException(); }))(default(T));
                 return;
             }
 
@@ -95,7 +95,7 @@ namespace Tonari.ActionPattern
                     return;
                 }
 
-            (p.GetDefault() ?? ((x) => { }))(source);
+            (p.GetDefault() ?? ((x) => { throw new UndefinedDefaultPatternException(); }))(source);
         }
 
         public static TResult Match<T, TResult>(this T source, IActionPattern<Func<T, bool>, Func<T, TResult>> pattern)
@@ -105,13 +105,13 @@ namespace Tonari.ActionPattern
                 throw new Exception();
 
             if (Object.Equals(source, null))
-                return (p.GetCatchNull() ?? p.GetDefault() ?? (x => default(TResult)))(default(T));
+                return (p.GetCatchNull() ?? p.GetDefault() ?? (x => { throw new UndefinedDefaultPatternException(); }))(default(T));
 
             foreach (var x in p.GetPatterns())
                 if (x.Key(source))
                     return x.Value(source);
 
-            return (p.GetDefault() ?? (x => default(TResult)))(source);
+            return (p.GetDefault() ?? (x => { throw new UndefinedDefaultPatternException(); }))(source);
         }
 
         public static void Match<TPrimary, TSecondary>(this TPrimary source, IActionPattern<Func<TPrimary, bool>, Action<TPrimary, TSecondary>> pattern, TSecondary secondary)
@@ -122,7 +122,7 @@ namespace Tonari.ActionPattern
 
             if (Object.Equals(source, null))
             {
-                (p.GetCatchNull() ?? p.GetDefault() ?? ((x, y) => { }))(default(TPrimary), secondary);
+                (p.GetCatchNull() ?? p.GetDefault() ?? ((x, y) => { throw new UndefinedDefaultPatternException(); }))(default(TPrimary), secondary);
                 return;
             }
 
@@ -133,7 +133,7 @@ namespace Tonari.ActionPattern
                     return;
                 }
 
-            (p.GetDefault() ?? ((x, y) => { }))(source, secondary);
+            (p.GetDefault() ?? ((x, y) => { throw new UndefinedDefaultPatternException(); }))(source, secondary);
         }
 
         public static TResult Match<TPrimary, TSecondary, TResult>(this TPrimary source, IActionPattern<Func<TPrimary, bool>, Func<TPrimary, TSecondary, TResult>> pattern, TSecondary secondary)
@@ -143,13 +143,13 @@ namespace Tonari.ActionPattern
                 throw new Exception();
 
             if (Object.Equals(source, null))
-                return (p.GetCatchNull() ?? p.GetDefault() ?? ((x, y) => default(TResult)))(default(TPrimary), secondary);
+                return (p.GetCatchNull() ?? p.GetDefault() ?? ((x, y) => { throw new UndefinedDefaultPatternException(); }))(default(TPrimary), secondary);
 
             foreach (var x in p.GetPatterns())
                 if (x.Key(source))
                     return x.Value(source, secondary);
 
-            return (p.GetDefault() ?? ((x, y) => default(TResult)))(source, secondary);
+            return (p.GetDefault() ?? ((x, y) => { throw new UndefinedDefaultPatternException(); }))(source, secondary);
         }
 
         public static void Match<TPrimary, TSecondary>(this TPrimary source, IActionPattern<Func<TPrimary, TSecondary, bool>, Action<TPrimary, TSecondary>> pattern, TSecondary secondary)
@@ -160,7 +160,7 @@ namespace Tonari.ActionPattern
 
             if (Object.Equals(source, null) || Object.Equals(secondary, null))
             {
-                (p.GetCatchNull() ?? p.GetDefault() ?? ((x, y) => { }))(default(TPrimary), default(TSecondary));
+                (p.GetCatchNull() ?? p.GetDefault() ?? ((x, y) => { throw new UndefinedDefaultPatternException(); }))(default(TPrimary), default(TSecondary));
                 return;
             }
 
@@ -171,7 +171,7 @@ namespace Tonari.ActionPattern
                     return;
                 }
 
-            (p.GetDefault() ?? ((x, y) => { }))(source, secondary);
+            (p.GetDefault() ?? ((x, y) => { throw new UndefinedDefaultPatternException(); }))(source, secondary);
         }
 
         public static TResult Match<TPrimary, TSecondary, TResult>(this TPrimary source, IActionPattern<Func<TPrimary, TSecondary, bool>, Func<TPrimary, TSecondary, TResult>> pattern, TSecondary secondary)
@@ -181,13 +181,19 @@ namespace Tonari.ActionPattern
                 throw new Exception();
 
             if (Object.Equals(source, null) || Object.Equals(secondary, null))
-                return (p.GetCatchNull() ?? p.GetDefault() ?? ((x, y) => default(TResult)))(default(TPrimary), default(TSecondary));
+                return (p.GetCatchNull() ?? p.GetDefault() ?? ((x, y) => { throw new UndefinedDefaultPatternException(); }))(default(TPrimary), default(TSecondary));
 
             foreach (var x in p.GetPatterns())
                 if (x.Key(source, secondary))
                     return x.Value(source, secondary);
 
-            return (p.GetDefault() ?? ((x, y) => default(TResult)))(source, secondary);
+            return (p.GetDefault() ?? ((x, y) => { throw new UndefinedDefaultPatternException(); }))(source, secondary);
         }
+    }
+
+    [Serializable]
+    public class UndefinedDefaultPatternException : Exception
+    {
+        public UndefinedDefaultPatternException() : base("A DefaultPattern could not be found in the specified ActionPattern.") { }
     }
 }

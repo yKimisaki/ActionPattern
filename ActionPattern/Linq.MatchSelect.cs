@@ -5,7 +5,7 @@ namespace Tonari.ActionPattern
 {
     public static class LinqMatchSelect
     {
-		public static IEnumerable<TResult> MatchSelect<T, TResult>(this IEnumerable<T> source, IActionPattern<T, Func<T, TResult>> pattern)
+        public static IEnumerable<TResult> MatchSelect<T, TResult>(this IEnumerable<T> source, IActionPattern<T, Func<T, TResult>> pattern)
         {
             using (var e = source.GetEnumerator())
             {

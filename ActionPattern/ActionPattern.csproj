@@ -44,6 +44,7 @@
     <Compile Include="ActionPatternBase.cs" />
     <Compile Include="ActionPatternMatch.cs" />
     <Compile Include="IActionPattern.cs" />
+    <Compile Include="SwitchPattern.cs" />
     <Compile Include="Linq.MatchTrace.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
